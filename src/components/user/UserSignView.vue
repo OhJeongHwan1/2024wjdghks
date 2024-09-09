@@ -4,7 +4,7 @@
       <input
         type="text"
         class="form-control"
-        placeholder="userid"
+        placeholder="UserId"
         v-model="userData.userid"
       />
     </div>
@@ -12,7 +12,7 @@
       <input
         type="text"
         class="form-control"
-        placeholder="password"
+        placeholder="Password"
         v-model="userData.password"
       />
     </div>
@@ -20,7 +20,7 @@
       <input
         type="text"
         class="form-control"
-        placeholder="username"
+        placeholder="UserName"
         v-model="userData.username"
       />
     </div>
@@ -28,24 +28,29 @@
       <input
         type="text"
         class="form-control"
-        placeholder="addr"
+        placeholder="Address"
         v-model="userData.addr"
       />
     </div>
     <div class="row mb-3">
-      <div class="col-6">
+      <div class="col-4">
+        <div class="btn btn-success" style="width: 100%" @click="modalOpen">
+          검색
+        </div>
+      </div>
+      <div class="col-4">
         <input
           type="text"
           class="form-control"
-          placeholder="latitude"
+          placeholder="Latitude"
           v-model="userData.latitude"
         />
       </div>
-      <div class="col-6">
+      <div class="col-4">
         <input
           type="text"
           class="form-control"
-          placeholder="longitude"
+          placeholder="Longitude"
           v-model="userData.longitude"
         />
       </div>
@@ -63,14 +68,21 @@
     </div>
     <div class="btn btn-primary" @click="addUser">회원가입</div>
   </div>
+  <SearchModalView
+    v-if="isModal"
+    :isModal="isModal"
+    @closeModal="modalClose"
+    @setPos="setPos"
+  />
 </template>
 
 <script setup>
 import { ref } from "vue";
 import { useStore } from "vuex";
+import SearchModalView from "./SearchModalView.vue";
 
 const store = useStore();
-
+const isModal = ref(false);
 const userData = ref({
   userid: null,
   password: null,
@@ -116,6 +128,18 @@ const handleImage = (e) => {
     userData.value.image = URL.createObjectURL(file);
   }
 };
+
+function modalOpen() {
+  isModal.value = true;
+}
+function modalClose() {
+  isModal.value = false;
+}
+function setPos(pos) {
+  userData.value.latitude = pos.latitude;
+  userData.value.longitude = pos.longitude;
+  modalClose();
+}
 </script>
 
 <style lang="scss" scoped></style>

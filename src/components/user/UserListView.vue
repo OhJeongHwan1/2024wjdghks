@@ -57,6 +57,7 @@ function modalOpen(user) {
 }
 function modalClose() {
   isModal.value = false;
+  store.commit("setSelectedUser", null);
 }
 </script>
 
